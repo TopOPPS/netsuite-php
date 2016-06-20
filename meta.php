@@ -22,12 +22,12 @@ $service = new NetSuiteService($config);
 use NetSuite\Classes\getSelectValueRequest;
 use NetSuite\Classes\GetSelectValueFieldDescription;
 
-$recordType = "opportunity";
-$field = "entityStatus";
+//Example:
+// 127.0.0.1:8888/search.php?email=<username>&password=<password>&account=<accountidhere>&object=opportunity&field=entityStatus
 
 $obj = new GetSelectValueFieldDescription();
-$obj->recordType = $recordType;
-$obj->field = $field;
+$obj->recordType = $_GET['object'];
+$obj->field = $_GET['field'];
 
 $request = new getSelectValueRequest();
 $request->fieldDescription = $obj;
@@ -35,41 +35,10 @@ $request->pageIndex = 0;
  
 $getResponse = $service->getSelectValue($request);
 
-print $getResponse->readResponse;
-print "2";
-print $getResponse->readResponse->record;
-/*
-if ( ! $getResponse->readResponse->status->isSuccess) {
+if ( ! $getResponse->getSelectValueResult->status->isSuccess) {
     echo "GET ERROR";
 } else {
-    $customer = $getResponse->readResponse->record;
+    print json_encode($getResponse->getSelectValueResult->baseRefList->baseRef);
 }
-
-print json_encode($customer);
-*/
-
-/*
- *var methods = new Hashtable();
-var shipMethodFieldDesc = new GetSelectValueFieldDescription()
-{
-    field = "shipmethod",
-    recordType = RecordType.estimate,
-    recordTypeSpecified = true
-};
-
-// make connection.    
-
-var result = connection.Service.getSelectValue(shipMethodFieldDesc, 0);
-if (result.status.isSuccess)
-{
-    for (var i = 0; i < result.totalRecords; i++)
-    {
-       // cast to RecordRef 
-       var itemRef = (RecordRef)result.baseRefList[i];
-
-       methods.Add(itemRef.internalId, itemRef.name);
-    }
-}
-*/
 
 ?>
