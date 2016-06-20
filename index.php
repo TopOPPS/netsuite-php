@@ -35,6 +35,6 @@ if ( ! $getResponse->readResponse->status->isSuccess) {
     $customer = $getResponse->readResponse->record;
 }
 
-print_r($customer);
+print json_encode($customer);
 
 ?>
