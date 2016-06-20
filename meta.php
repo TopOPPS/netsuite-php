@@ -35,7 +35,9 @@ $request->pageIndex = 0;
  
 $getResponse = $service->getSelectValue($request);
 
-print json_encode($getResponse->readResponse);
+print $getResponse->readResponse;
+print "2";
+print $getResponse->readResponse->record;
 /*
 if ( ! $getResponse->readResponse->status->isSuccess) {
     echo "GET ERROR";
