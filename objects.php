@@ -1,5 +1,20 @@
-
 <?
+/**
+* /objects.php
+* Allows CRUD operations on a single object in NetSuite
+*
+* -- HEADERS:
+* email: (ex. php@netsuite.com)
+* password: (ex. ******)
+* account: (ex. KSLADSDSJDNSLAKDMS)
+*
+* -- POST:
+* type: (ex. POST)
+* entity: (ex. {"name": "Test Entity", "id": 100})
+* data: ({"amount": 12345}) --optional
+*
+**/
+
 require 'vendor/autoload.php';
 
 use NetSuite\NetSuiteService;

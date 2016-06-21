@@ -1,4 +1,20 @@
 <?
+/**
+* /meta.php
+* Gives meta information of References fields in 
+*
+* -- HEADERS:
+* email: (ex. php@netsuite.com)
+* password: (ex. ******)
+* account: (ex. KSLADSDSJDNSLAKDMS)
+*
+* -- POST:
+* object: (ex. opportunity)
+* field: (ex. entityStatus)
+*
+**/
+
+
 require 'vendor/autoload.php';
 
 use NetSuite\NetSuiteService;
