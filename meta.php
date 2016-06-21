@@ -1,7 +1,7 @@
 <?
 /**
 * /meta.php
-* Gives meta information of References fields in 
+* Gives meta information of References fields in
 *
 * -- HEADERS:
 * email: (ex. php@netsuite.com)
@@ -52,7 +52,8 @@ $request->pageIndex = 0;
 $getResponse = $service->getSelectValue($request);
 
 if ( ! $getResponse->getSelectValueResult->status->isSuccess) {
-    echo "GET ERROR";
+    http_response_code(500);
+    print_r($getResponse->getSelectValueResult->status->statusDetail[0]->message);
 } else {
     print json_encode($getResponse->getSelectValueResult->baseRefList->baseRef);
 }

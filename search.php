@@ -1,7 +1,7 @@
 <?
 /**
 * /search.php
-* Allows paginated queries of NetSuite objects. 
+* Allows paginated queries of NetSuite objects.
 *
 * -- HEADERS:
 * email: (ex. php@netsuite.com)
@@ -57,17 +57,12 @@ use NetSuite\Classes\OpportunitySearchBasic;
 
 $service->setSearchPreferences(false, 20);
 
-$search = get_basic_search($_POST['object']);
-
-if($search == False)
-{
-  $error->status = 400;
-  $error->message = "Unknown object type: " . $_POST['object'];
-  print json_encode($error);
-  return;
+try{
+  $search = get_basic_search($_POST['object']);
+} catch ( Exception $e ){
+  http_response_code(500);
+  echo $e->getMessage();
 }
-
-$search->title = $oppSearchField;
 
 if(array_key_exists('page', $_POST) && $_POST['page'] > 1)
 {
@@ -84,7 +79,7 @@ if(array_key_exists('page', $_POST) && $_POST['page'] > 1)
 }
 
 if (!$result->status->isSuccess) {
-    $error->status = 400;
+    http_response_code(500);
     $error->code = $result->status->statusDetail[0]->code;
     $error->message = $result->status->statusDetail[0]->message;
     print json_encode($error);
@@ -115,7 +110,7 @@ function get_basic_search($object)
     case 'opportunity':
       return new OpportunitySearchBasic();
     default:
-      return False;
+      throw new Exception("Object Does Not Exist");
   }
 }
 

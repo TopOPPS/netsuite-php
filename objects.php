@@ -117,7 +117,8 @@ function GET($service)
   $request->baseRef->type = $entity->name;
   $getResponse = $service->get($request);
   if ( ! $getResponse->readResponse->status->isSuccess) {
-      return $getResponse->writeResponse->status->statusDetail[0]->message;
+    http_response_code(500);
+    print_r($getResponse->writeResponse->status->statusDetail[0]->message);
   } else {
       return $getResponse->readResponse->record;
   }
@@ -132,7 +133,8 @@ function POST($service)
   $request->record = map_from_data($entity, $data);
   $addResponse = $service->add($request);
   if ( ! $addResponse->writeResponse->status->isSuccess) {
-      return $updateResponse->writeResponse->status->statusDetail[0]->message;
+    http_response_code(500);
+    print_r($updateResponse->writeResponse->status->statusDetail[0]->message);
   } else {
       $request = new GetRequest();
       $request->baseRef = $addResponse->writeResponse->baseRef;
@@ -149,7 +151,8 @@ function PUT($service)
   $request->record = map_from_data($entity, $data);
   $updateResponse = $service->update($request);
   if ( ! $updateResponse->writeResponse->status->isSuccess) {
-      return $updateResponse->writeResponse->status->statusDetail[0]->message;
+      http_response_code(500);
+      print_r($updateResponse->writeResponse->status->statusDetail[0]->message);
   } else {
     $request = new GetRequest();
     $request->baseRef = $updateResponse->writeResponse->baseRef;
@@ -167,7 +170,8 @@ function DELETE()
   $request->baseRef->type = $entity->name;
   $deleteResponse = $service->delete($request);
   if ( ! $deleteResponse->writeResponse->status->isSuccess) {
-      return $deleteResponse->writeResponse->status->statusDetail[0]->message;
+      http_response_code(500);
+      print_r($deleteResponse->writeResponse->status->statusDetail[0]->message);
   } else {
     $request = new GetRequest();
     $request->baseRef = $deleteResponse->writeResponse->baseRef;
