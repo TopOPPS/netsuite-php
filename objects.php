@@ -67,6 +67,7 @@ use NetSuite\Classes\Customer;
 use NetSuite\Classes\EntityCustomField;
 use NetSuite\Classes\Employee;
 use NetSuite\Classes\Opportunity;
+use NetSuite\Classes\CustomerStatus;
 use NetSuite\Classes\Record;
 
 function entity_map($name){
@@ -86,6 +87,8 @@ function entity_map($name){
       return new Employee();
     case "opportunity":
       return new Opportunity();
+    case 'stage':
+      return new CustomerStatus();
     default:
       return new Record();
   }

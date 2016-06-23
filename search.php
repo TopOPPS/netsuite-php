@@ -44,6 +44,7 @@ use NetSuite\Classes\EntitySearchBasic;
 use NetSuite\Classes\TaskSearchBasic;
 use NetSuite\Classes\EmployeeSearchBasic;
 use NetSuite\Classes\OpportunitySearchBasic;
+use NetSuite\Classes\CustomerStatusSearchBasic;
 
 
 
@@ -55,13 +56,14 @@ use NetSuite\Classes\OpportunitySearchBasic;
 
  */
 
-$service->setSearchPreferences(false, 20);
+$service->setSearchPreferences(false, 50);
 
 try{
+
   $search = get_basic_search($_POST['object']);
 } catch ( Exception $e ){
   http_response_code(500);
-  echo $e->getMessage();
+  var_dump($_POST);
 }
 
 if(array_key_exists('page', $_POST) && $_POST['page'] > 1)
@@ -69,11 +71,13 @@ if(array_key_exists('page', $_POST) && $_POST['page'] > 1)
   $request = new SearchMoreWithIdRequest();
   $request->searchId = $_POST['searchId'];
   $request->pageIndex = $_POST['page'];
+  $request->pageSize = array_key_exists('pageSize', $_POST) ? $_POST['pageSize'] : 20;
   $searchMoreWithIdResponse = $service->searchMoreWithId($request);
   $result = $searchMoreWithIdResponse->searchResult;
 } else {
   $request = new SearchRequest();
   $request->searchRecord = $search;
+  $request->pageSize = array_key_exists('pageSize', $_POST) ? $_POST['pageSize'] : 20;
   $searchResponse = $service->search($request);
   $result = $searchResponse->searchResult;
 }
@@ -109,8 +113,10 @@ function get_basic_search($object)
       return new EmployeeSearchBasic();
     case 'opportunity':
       return new OpportunitySearchBasic();
+    case 'stage':
+      return new CustomerStatusSearchBasic();
     default:
-      throw new Exception("Object Does Not Exist");
+      throw new Exception("Object not found");
   }
 }
 
