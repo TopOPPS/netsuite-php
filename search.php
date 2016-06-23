@@ -24,7 +24,7 @@ $config = array(
    "host"     => "https://webservices.netsuite.com",
    "email"    => $_SERVER['HTTP_EMAIL'],
    "password" => $_SERVER['HTTP_PASSWORD'],
-   "password" => $_SERVER['role'],
+   "role"     => $_SERVER['HTTP_ROLE'],
    "account"  => $_SERVER['HTTP_ACCOUNT'],
    "app_id"   => "4AD027CA-88B3-46EC-9D3E-41C6E6A325E2",
    // optional -------------------------------------
