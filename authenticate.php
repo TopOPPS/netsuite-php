@@ -17,10 +17,6 @@ $config = array(
    "log_path" => ""
 );
 
-/*
-http://localhost:8888/authenticate.php?email=sean+peon@topopps.com&password=Topd0ge1!!!&account=TSTDRV1496099&title_starts_with=&role=9
- */
-
 $service = new NetSuiteService($config);
 
 use NetSuite\Classes\SearchStringField;
@@ -31,7 +27,7 @@ $service->setSearchPreferences(false, 20);
 
 $oppSearchField = new SearchStringField();
 $oppSearchField->operator = "startsWith";
-$oppSearchField->searchValue = $_GET['title_starts_with'];
+$oppSearchField->searchValue = "zzzzzzz";
 
 $search = new OpportunitySearchBasic();
 $search->title = $oppSearchField;
@@ -39,22 +35,12 @@ $search->title = $oppSearchField;
 $request = new SearchRequest();
 $request->searchRecord = $search;
 
-print "1";
 try {    
     $searchResponse = $service->search($request);
+    http_response_code(200);
+    print "Valid credentials.";
 } catch (Exception $e) {
-    
+    http_response_code(401);
+    print "Invalid credentials.";
 }
-print "2";
-
-if (!$searchResponse->searchResult->status->isSuccess) {
-    echo "SEARCH ERROR";
-} else {
-    $result = $searchResponse->searchResult;
-    $count = $result->totalRecords;
-    $records = $result->recordList;
-
-    print json_encode($result);
-}
-
 ?>
