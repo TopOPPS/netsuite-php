@@ -7,10 +7,10 @@ $config = array(
    // required -------------------------------------
    "endpoint" => "2016_1",
    "host"     => "https://webservices.netsuite.com",
-   "email"    => $_GET['email'],
-   "password" => $_GET['password'],
-   "role"     => "3",
-   "account"  => $_GET['account'],
+   "email"    => $_SERVER['email'],
+   "password" => $_SERVER['password'],
+   "role"     => $_SERVER['role'],
+   "account"  => $_SERVER['account'],
    "app_id"   => "4AD027CA-88B3-46EC-9D3E-41C6E6A325E2",
    // optional -------------------------------------
    "logging"  => true,
