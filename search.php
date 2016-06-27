@@ -41,6 +41,7 @@ use NetSuite\Classes\SearchMoreWithIdRequest;
 use NetSuite\Classes\CustomerSearchBasic;
 use NetSuite\Classes\ContactSearchBasic;
 use NetSuite\Classes\EntitySearchBasic;
+use NetSuite\Classes\ItemSearchBasic;
 use NetSuite\Classes\TaskSearchBasic;
 use NetSuite\Classes\EmployeeSearchBasic;
 use NetSuite\Classes\OpportunitySearchBasic;
