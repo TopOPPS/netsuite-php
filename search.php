@@ -48,6 +48,7 @@ use NetSuite\Classes\CustomerStatusSearchBasic;
 
 
 
+
 /*
  Example:
 
@@ -115,6 +116,8 @@ function get_basic_search($object)
       return new OpportunitySearchBasic();
     case 'stage':
       return new CustomerStatusSearchBasic();
+    case 'item':
+      return new ItemSearchBasic();
     default:
       throw new Exception("Object not found");
   }

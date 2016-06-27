@@ -68,6 +68,7 @@ use NetSuite\Classes\EntityCustomField;
 use NetSuite\Classes\Employee;
 use NetSuite\Classes\Opportunity;
 use NetSuite\Classes\CustomerStatus;
+use NetSuite\Classes\OpportunityItem;
 use NetSuite\Classes\Record;
 
 function entity_map($name){
@@ -87,8 +88,10 @@ function entity_map($name){
       return new Employee();
     case "opportunity":
       return new Opportunity();
-    case 'stage':
+    case "stage":
       return new CustomerStatus();
+    case "item":
+      return new Item();
     default:
       return new Record();
   }
@@ -132,7 +135,7 @@ function POST($service)
 {
   $entity = json_decode($_POST['entity']);
   $data = json_decode($_POST['data']);
-  $request = new UpsertRequest();
+  $request = new AddRequest();
   $request->record = map_from_data($entity, $data);
   $addResponse = $service->add($request);
   if ( ! $addResponse->writeResponse->status->isSuccess) {
