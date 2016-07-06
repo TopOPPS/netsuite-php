@@ -54,7 +54,7 @@ switch($_POST['type']){
     break;
 }
 
-print_r($result);
+print json_encode($result);
 
 ?>
 
