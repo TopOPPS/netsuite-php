@@ -115,6 +115,15 @@ function map_from_data($entity, $data){
 }
 
 function GET($service)
+/**
+*
+* Get a single object.
+*
+* ex.
+*  type : GET
+*  entity : { 'id' : 0, 'name': 'Opportunity'}
+*
+**/
 {
   $entity = json_decode($_POST['entity']);
   $request = new GetRequest();
@@ -132,6 +141,16 @@ function GET($service)
 }
 
 function POST($service)
+/**
+*
+* Post a new object.
+*
+* ex.
+*  type : POST
+*  entity : {'name': 'Opportunity'}
+*  data: {'amount' : 5000, 'title': 'Export Solutions'}
+*
+**/
 {
   $entity = json_decode($_POST['entity']);
   $data = json_decode($_POST['data']);
@@ -150,6 +169,16 @@ function POST($service)
 }
 
 function PUT($service)
+/**
+*
+* Update fields on an object. Does not apply to record refs and custom fields
+*
+* ex.
+*  type : PUT
+*  entity : {'id': 0, 'name': 'Opportunity'}
+*  data: {'amount' : 5500 }
+*
+**/
 {
   $entity = json_decode($_POST['entity']);
   $data = json_decode($_POST['data']);
@@ -168,7 +197,17 @@ function PUT($service)
 }
 
 function DELETE()
+/**
+*
+* Delete an object.
+*
+* ex.
+*  type : DELTE
+*  entity : {'id': 0, 'name': 'Opportunity'}
+*
+**/
 {
+
   $entity = json_decode($_POST['entity']);
   $request = new DeleteRequest();
   $request->baseRef = new RecordRef();
@@ -184,6 +223,11 @@ function DELETE()
     $getResponse = $service->get($request);
     return $getResponse->readResponse->record;
   }
+}
+
+function MAP()
+{
+
 }
 
 ?>
