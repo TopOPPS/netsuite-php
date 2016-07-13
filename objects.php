@@ -83,7 +83,7 @@ function entity_map($name){
     case "customer":
       return new Customer();
     case "custom_field":
-      return new EntityCustomField();
+      return new TransactionBodyCustomField();
     case "user":
       return new Employee();
     case "opportunity":

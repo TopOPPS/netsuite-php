@@ -40,6 +40,11 @@ use NetSuite\Classes\SearchMoreWithIdRequest;
 
 use NetSuite\Classes\CustomerSearchBasic;
 use NetSuite\Classes\ContactSearchBasic;
+use NetSuite\Classes\CustomListSearchBasic;
+use NetSuite\Classes\CustomRecordSearchBasic;
+use NetSuite\Classes\TransactionSearchBasic;
+
+
 use NetSuite\Classes\EntitySearchBasic;
 use NetSuite\Classes\ItemSearchBasic;
 use NetSuite\Classes\TaskSearchBasic;
@@ -107,6 +112,8 @@ function get_basic_search($object)
       return new CustomerSearchBasic();
     case 'contact':
       return new ContactSearchBasic();
+    case 'customfield':
+      return new CustomListSearchBasic();
     case 'entity':
       return new EntitySearchBasic();
     case 'task':
