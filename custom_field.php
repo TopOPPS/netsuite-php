@@ -34,23 +34,12 @@ $config = array(
 
 $service = new NetSuiteService($config);
 
-use NetSuite\Classes\SearchStringField;
-use NetSuite\Classes\SearchRequest;
-use NetSuite\Classes\SearchMoreWithIdRequest;
-
-use NetSuite\Classes\CustomerSearchBasic;
-use NetSuite\Classes\ContactSearchBasic;
+use NetSuite\Classes\CustomListSearch;
 use NetSuite\Classes\CustomListSearchBasic;
-use NetSuite\Classes\CustomRecordSearchBasic;
-use NetSuite\Classes\TransactionSearchBasic;
-
-
-use NetSuite\Classes\EntitySearchBasic;
-use NetSuite\Classes\ItemSearchBasic;
-use NetSuite\Classes\TaskSearchBasic;
+use NetSuite\Classes\SearchMultiSelectField;
+use NetSuite\Classes\RecordRef;
 use NetSuite\Classes\EmployeeSearchBasic;
-use NetSuite\Classes\OpportunitySearchBasic;
-use NetSuite\Classes\CustomerStatusSearchBasic;
+use NetSuite\Classes\SearchRequest;
 
 
 
@@ -65,13 +54,25 @@ use NetSuite\Classes\CustomerStatusSearchBasic;
 
 $service->setSearchPreferences(false, 50);
 
-try{
+$search = new CustomListSearch();
 
-  $search = get_basic_search($_POST['object']);
-} catch ( Exception $e ){
-  http_response_code(500);
-  var_dump($_POST);
-}
+
+$rr = new RecordRef();
+$rr->type = 'transactionBodyCustomField';
+
+$userRR = new RecordRef();
+$userRR->type = 'employee';
+$userRR->internalId = -5;
+
+$msField = new SearchMultiSelectField();
+$msField->operator = 'anyOf';
+$msField->searchValue = $userRR;
+
+$basic = new CustomListSearchBasic();
+$basic->owner = $msField;
+
+$search->basic = $basic;
+
 
 if(array_key_exists('page', $_POST) && $_POST['page'] > 1)
 {
@@ -98,39 +99,6 @@ if (!$result->status->isSuccess) {
     $count = $result->totalRecords;
     $records = $result->recordList;
     print json_encode($result);
-}
-
-?>
-
-<?
-
-function get_basic_search($object)
-{
-  switch($object)
-  {
-    case 'account':
-      return new CustomerSearchBasic();
-    case 'contact':
-      return new ContactSearchBasic();
-    case 'customfield':
-      return new CustomRecordSearch();
-    case 'entity':
-      return new EntitySearchBasic();
-    case 'task':
-      return new TaskSearchBasic();
-    case 'note':
-      return new NoteSearchBasic();
-    case 'user':
-      return new EmployeeSearchBasic();
-    case 'opportunity':
-      return new OpportunitySearchBasic();
-    case 'stage':
-      return new CustomerStatusSearchBasic();
-    case 'item':
-      return new ItemSearchBasic();
-    default:
-      throw new Exception("Object not found");
-  }
 }
 
 ?>
