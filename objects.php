@@ -132,7 +132,7 @@ function custom_field_map($name){
     case "url":
       return new StringCustomFieldRef();
     default:
-      return new CustomFieldRef();
+      return new StringCustomFieldRef();
   }
 
 }
@@ -143,16 +143,19 @@ function map_from_data($entity, $data){
   *  Form corresponding object based off of entity definition.
   *  Set an attributes value based on provided data parameters.
   **/
+
   $el = entity_map($entity['name']);
-  $el->internalId = $entity['id'];
+  $el->internalId = (int) $entity['id'];
+
   if(array_key_exists('custom_field', $data)){
     $field = custom_field_map($data['custom_field']['type']);
     $field->scriptId = $data['custom_field']['internalId'];
     $field->value = $data['custom_field']['value'];
 
-    $customFieldList = new customFieldList();
+    $customFieldList = new CustomFieldList();
     $customFieldList->customField[] = $field;
     $el->customFieldList = $customFieldList;
+
     return $el;
   }
 
@@ -178,12 +181,12 @@ function GET($service)
   $entity = json_decode($_POST['entity'], true);
   $request = new GetRequest();
   $request->baseRef = new RecordRef();
-  $request->baseRef->internalId = $entity->id;
-  $request->baseRef->type = $entity->name;
+  $request->baseRef->internalId = $entity['id'];
+  $request->baseRef->type = $entity['name'];
   $getResponse = $service->get($request);
   if ( ! $getResponse->readResponse->status->isSuccess) {
     http_response_code(500);
-    print_r($getResponse->writeResponse->status->statusDetail[0]->message);
+    print_r($getResponse->readResponse->status->statusDetail[0]->message);
   } else {
       return $getResponse->readResponse->record;
   }
