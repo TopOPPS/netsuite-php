@@ -36,7 +36,9 @@ $service = new NetSuiteService($config);
 
 use NetSuite\Classes\CustomListSearch;
 use NetSuite\Classes\CustomListSearchBasic;
-use NetSuite\Classes\SearchMultiSelectField;
+use NetSuite\Classes\SearchBooleanField;
+use NetSuite\Classes\SearchStringField;
+use NetSuite\Classes\SearchStringFieldOperator;
 use NetSuite\Classes\RecordRef;
 use NetSuite\Classes\EmployeeSearchBasic;
 use NetSuite\Classes\SearchRequest;
@@ -52,26 +54,18 @@ use NetSuite\Classes\SearchRequest;
 
  */
 
-$service->setSearchPreferences(false, 50);
+$service->setSearchPreferences(false, 50, true);
+
+$ss = new SearchStringField();
+$ss->searchValue = "test_field";
+$ss->operator = "contains";
 
 $search = new CustomListSearch();
-
-
-$rr = new RecordRef();
-$rr->type = 'transactionBodyCustomField';
-
-$userRR = new RecordRef();
-$userRR->type = 'employee';
-$userRR->internalId = -5;
-
-$msField = new SearchMultiSelectField();
-$msField->operator = 'anyOf';
-$msField->searchValue = $userRR;
-
 $basic = new CustomListSearchBasic();
-$basic->owner = $msField;
+$basic->name = $ss;
 
 $search->basic = $basic;
+
 
 
 if(array_key_exists('page', $_POST) && $_POST['page'] > 1)

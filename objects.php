@@ -39,6 +39,8 @@ $config = array(
 );
 
 $service = new NetSuiteService($config);
+$service->setSearchPreferences(false, 50);
+
 switch($_POST['type']){
   case 'POST':
     $result = POST($service);
@@ -61,6 +63,7 @@ print json_encode($result);
 <?
 
 use NetSuite\Classes\Account;
+use NetSuite\Classes\Task;
 use NetSuite\Classes\Contact;
 use NetSuite\Classes\Current;
 use NetSuite\Classes\Customer;
@@ -76,6 +79,8 @@ function entity_map($name){
   switch($name){
     case "account":
       return new Account();
+    case "task":
+      return new Task();
     case "contact":
       return new Contact();
     case "currency":
@@ -159,7 +164,7 @@ function POST($service)
   $addResponse = $service->add($request);
   if ( ! $addResponse->writeResponse->status->isSuccess) {
     http_response_code(500);
-    print_r($updateResponse->writeResponse->status->statusDetail[0]->message);
+    print_r($addResponse->writeResponse->status->statusDetail[0]->message);
   } else {
       $request = new GetRequest();
       $request->baseRef = $addResponse->writeResponse->baseRef;
