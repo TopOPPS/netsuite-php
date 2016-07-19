@@ -12,6 +12,9 @@
 * type: (ex. POST)
 * entity: (ex. {"name": "Test Entity", "id": 100})
 * data: ({"amount": 12345}) --optional
+* OR
+* data: {"custom_field": {"type": "boolean", "scriptId": "custbody10", "value": false }}
+*
 *
 **/
 
@@ -67,12 +70,18 @@ use NetSuite\Classes\Task;
 use NetSuite\Classes\Contact;
 use NetSuite\Classes\Current;
 use NetSuite\Classes\Customer;
+use NetSuite\Classes\CustomFieldList;
 use NetSuite\Classes\EntityCustomField;
 use NetSuite\Classes\Employee;
 use NetSuite\Classes\Opportunity;
 use NetSuite\Classes\CustomerStatus;
 use NetSuite\Classes\OpportunityItem;
 use NetSuite\Classes\Record;
+use NetSuite\Classes\StringCustomFieldRef;
+use NetSuite\Classes\LongCustomFieldRef;
+use NetSuite\Classes\DoubleCustomFieldRef;
+use NetSuite\Classes\DateCustomFieldRef;
+use NetSuite\Classes\BooleanCustomFieldRef;
 
 function entity_map($name){
 
@@ -103,20 +112,56 @@ function entity_map($name){
 
 }
 
+function custom_field_map($name){
+
+  switch($name){
+    case "amount":
+      return new DoubleCustomFieldRef();
+    case "boolean":
+      return new BooleanCustomFieldRef();
+    case "datetime":
+      return new DateCustomFieldRef();
+    case "int":
+      return new DoubleCustomFieldRef();
+    case "percent":
+      return new DoubleCustomFieldRef();
+    case "phone":
+      return new LongCustomFieldRef();
+    case "textarea":
+      return new StringCustomFieldRef();
+    case "url":
+      return new StringCustomFieldRef();
+    default:
+      return new CustomFieldRef();
+  }
+
+}
+
 
 function map_from_data($entity, $data){
   /**
   *  Form corresponding object based off of entity definition.
   *  Set an attributes value based on provided data parameters.
   **/
-  $el = entity_map($entity->name);
-  $el->internalId = $entity->id;
+  $el = entity_map($entity['name']);
+  $el->internalId = $entity['id'];
+  if(array_key_exists('custom_field', $data)){
+    $field = custom_field_map($data['custom_field']['type']);
+    $field->scriptId = $data['custom_field']['internalId'];
+    $field->value = $data['custom_field']['value'];
+
+    $customFieldList = new customFieldList();
+    $customFieldList->customField[] = $field;
+    $el->customFieldList = $customFieldList;
+    return $el;
+  }
 
   foreach($data as $key => $value)
   {
     $el->$key = $value;
   }
   return $el;
+
 }
 
 function GET($service)
@@ -130,7 +175,7 @@ function GET($service)
 *
 **/
 {
-  $entity = json_decode($_POST['entity']);
+  $entity = json_decode($_POST['entity'], true);
   $request = new GetRequest();
   $request->baseRef = new RecordRef();
   $request->baseRef->internalId = $entity->id;
@@ -157,8 +202,8 @@ function POST($service)
 *
 **/
 {
-  $entity = json_decode($_POST['entity']);
-  $data = json_decode($_POST['data']);
+  $entity = json_decode($_POST['entity'], true);
+  $data = json_decode($_POST['data'], true);
   $request = new AddRequest();
   $request->record = map_from_data($entity, $data);
   $addResponse = $service->add($request);
@@ -185,8 +230,8 @@ function PUT($service)
 *
 **/
 {
-  $entity = json_decode($_POST['entity']);
-  $data = json_decode($_POST['data']);
+  $entity = json_decode($_POST['entity'], true);
+  $data = json_decode($_POST['data'], true);
   $request = new UpdateRequest();
   $request->record = map_from_data($entity, $data);
   $updateResponse = $service->update($request);
@@ -194,10 +239,7 @@ function PUT($service)
       http_response_code(500);
       print_r($updateResponse->writeResponse->status->statusDetail[0]->message);
   } else {
-    $request = new GetRequest();
-    $request->baseRef = $updateResponse->writeResponse->baseRef;
-    $getResponse = $service->get($request);
-    return $getResponse->readResponse->record;
+      return $updateResponse->writeResponse;
   }
 }
 
@@ -213,7 +255,7 @@ function DELETE()
 **/
 {
 
-  $entity = json_decode($_POST['entity']);
+  $entity = json_decode($_POST['entity'], true);
   $request = new DeleteRequest();
   $request->baseRef = new RecordRef();
   $request->baseRef->internalId = $entity->id;
