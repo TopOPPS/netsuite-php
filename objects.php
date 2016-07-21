@@ -143,32 +143,29 @@ function map_from_data($entity, $data){
   *  Form corresponding object based off of entity definition.
   *  Set an attributes value based on provided data parameters.
   **/
-
   $el = entity_map($entity['name']);
-  $el->internalId = (int) $entity['id'];
+  if(array_key_exists('id', $entity)){
+    $el->internalId = (int) $entity['id'];
+  }
   if($entity['name'] == 'task'){
+
     if(array_key_exists('transaction', $data)){
       $opp = new RecordRef();
       $opp->type = "opportunity";
-      $opp->internal = $data['transaction'];
+      $opp->internalId = $data['transaction'];
       $data['transaction'] = $opp;
     }
 
     if(array_key_exists('contact', $data)){
       $contact = new RecordRef();
-      $contact->type = "contact"
+      $contact->type = "contact";
       $contact->internalId = $data['contact'];
       $data['contact'] = $contact;
     }
-    if(array_key_exists('owner', $data)){
-      $owner = new RecordRef();
-      $owner->type = "employee";
-      $owner->internalId = $data['owner'];
-      $data['owner'] = $owner;
-    }
-    if(array_key_exists('transaction', $data)){
+
+    if(array_key_exists('company', $data)){
       $company = new RecordRef();
-      $company->type = "account";
+      $company->type = "customer";
       $company->internalId = $data['company'];
       $data['company'] = $company;
     }
@@ -236,7 +233,6 @@ function POST($service)
   $data = json_decode($_POST['data'], true);
   $request = new AddRequest();
   $request->record = map_from_data($entity, $data);
-  var_dump($request->record);
   $addResponse = $service->add($request);
   if ( ! $addResponse->writeResponse->status->isSuccess) {
     http_response_code(500);
