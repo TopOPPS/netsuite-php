@@ -115,13 +115,13 @@ function entity_map($name){
 function custom_field_map($name){
 
   switch($name){
-    case "amount":
+    case "currency":
       return new DoubleCustomFieldRef();
     case "boolean":
       return new BooleanCustomFieldRef();
     case "datetime":
       return new DateCustomFieldRef();
-    case "int":
+    case "double":
       return new DoubleCustomFieldRef();
     case "percent":
       return new DoubleCustomFieldRef();
@@ -146,6 +146,33 @@ function map_from_data($entity, $data){
 
   $el = entity_map($entity['name']);
   $el->internalId = (int) $entity['id'];
+  if($entity['name'] == 'task'){
+    if(array_key_exists('transaction', $data)){
+      $opp = new RecordRef();
+      $opp->type = "opportunity";
+      $opp->internal = $data['transaction'];
+      $data['transaction'] = $opp;
+    }
+
+    if(array_key_exists('contact', $data)){
+      $contact = new RecordRef();
+      $contact->type = "contact"
+      $contact->internalId = $data['contact'];
+      $data['contact'] = $contact;
+    }
+    if(array_key_exists('owner', $data)){
+      $owner = new RecordRef();
+      $owner->type = "employee";
+      $owner->internalId = $data['owner'];
+      $data['owner'] = $owner;
+    }
+    if(array_key_exists('transaction', $data)){
+      $company = new RecordRef();
+      $company->type = "account";
+      $company->internalId = $data['company'];
+      $data['company'] = $company;
+    }
+  }
 
   if(array_key_exists('custom_field', $data)){
     $field = custom_field_map($data['custom_field']['type']);
@@ -209,6 +236,7 @@ function POST($service)
   $data = json_decode($_POST['data'], true);
   $request = new AddRequest();
   $request->record = map_from_data($entity, $data);
+  var_dump($request->record);
   $addResponse = $service->add($request);
   if ( ! $addResponse->writeResponse->status->isSuccess) {
     http_response_code(500);
