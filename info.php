@@ -34,7 +34,6 @@ $passport = new Passport();
 $passport->email = $config['email'];
 $passport->password = $config['password'];
 $passport->account = $config['account'];
-$passport->role = $config['role'];
 
 $login_request->passport = $passport;
 $response = $service->login($login_request);
