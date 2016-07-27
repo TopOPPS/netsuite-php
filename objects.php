@@ -147,18 +147,6 @@ function map_from_data($entity, $data){
   if(array_key_exists('id', $entity)){
     $el->internalId = (int) $entity['id'];
   }
-  if($entity['name'] == 'account'){
-      if(array_key_exists('contact', $data)){
-        $rolesList = new ContactRolesList();
-        $roles = new ContactRoles();
-        $roles->contact = {}
-        $roles->contact->internalId = data['contact']['id'];
-        $roles->role->internalId = data['role']['id'];
-        
-        $contact->email = data['contact']['id']
-
-      }
-  }
 
 
   if($entity['name'] == 'task'){
