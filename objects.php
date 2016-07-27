@@ -147,6 +147,20 @@ function map_from_data($entity, $data){
   if(array_key_exists('id', $entity)){
     $el->internalId = (int) $entity['id'];
   }
+  if($entity['name'] == 'account'){
+      if(array_key_exists('contact', $data)){
+        $rolesList = new ContactRolesList();
+        $roles = new ContactRoles();
+        $roles->contact = {}
+        $roles->contact->internalId = data['contact']['id'];
+        $roles->role->internalId = data['role']['id'];
+        
+        $contact->email = data['contact']['id']
+
+      }
+  }
+
+
   if($entity['name'] == 'task'){
 
     if(array_key_exists('transaction', $data)){
@@ -210,7 +224,7 @@ function GET($service)
   $getResponse = $service->get($request);
   if ( ! $getResponse->readResponse->status->isSuccess) {
     http_response_code(500);
-    print_r($getResponse->readResponse->status->statusDetail[0]->message);
+    return $getResponse->readResponse->status->statusDetail[0]->message;
   } else {
       return $getResponse->readResponse->record;
   }
@@ -236,7 +250,7 @@ function POST($service)
   $addResponse = $service->add($request);
   if ( ! $addResponse->writeResponse->status->isSuccess) {
     http_response_code(500);
-    print_r($addResponse->writeResponse->status->statusDetail[0]->message);
+    return $addResponse->writeResponse->status->statusDetail[0]->message;
   } else {
       $request = new GetRequest();
       $request->baseRef = $addResponse->writeResponse->baseRef;
@@ -264,7 +278,7 @@ function PUT($service)
   $updateResponse = $service->update($request);
   if ( ! $updateResponse->writeResponse->status->isSuccess) {
       http_response_code(500);
-      print_r($updateResponse->writeResponse->status->statusDetail[0]->message);
+      return $updateResponse->writeResponse->status->statusDetail[0]->message;
   } else {
       return $updateResponse->writeResponse;
   }
@@ -289,19 +303,14 @@ function DELETE()
   $request->baseRef->type = $entity->name;
   $deleteResponse = $service->delete($request);
   if ( ! $deleteResponse->writeResponse->status->isSuccess) {
-      http_response_code(500);
-      print_r($deleteResponse->writeResponse->status->statusDetail[0]->message);
+      http_response_code(408);
+      return $deleteResponse->writeResponse->status->statusDetail[0]->message;
   } else {
     $request = new GetRequest();
     $request->baseRef = $deleteResponse->writeResponse->baseRef;
     $getResponse = $service->get($request);
     return $getResponse->readResponse->record;
   }
-}
-
-function MAP()
-{
-
 }
 
 ?>

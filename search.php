@@ -40,6 +40,7 @@ use NetSuite\Classes\SearchMoreWithIdRequest;
 
 use NetSuite\Classes\CustomerSearchBasic;
 use NetSuite\Classes\ContactSearchBasic;
+use NetSuite\Classes\ContactRoleSearchBasic;
 use NetSuite\Classes\CustomListSearchBasic;
 use NetSuite\Classes\CustomRecordSearchBasic;
 use NetSuite\Classes\TransactionSearchBasic;
@@ -90,7 +91,7 @@ if(array_key_exists('page', $_POST) && $_POST['page'] > 1)
 }
 
 if (!$result->status->isSuccess) {
-    http_response_code(500);
+    http_response_code(408);
     $error->code = $result->status->statusDetail[0]->code;
     $error->message = $result->status->statusDetail[0]->message;
     print json_encode($error);
@@ -112,6 +113,8 @@ function get_basic_search($object)
       return new CustomerSearchBasic();
     case 'contact':
       return new ContactSearchBasic();
+    case 'contactrole':
+      return new ContactRoleSearchBasic();
     case 'customfield':
       return new CustomRecordSearch();
     case 'entity':
