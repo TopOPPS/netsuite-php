@@ -68,6 +68,7 @@ print json_encode($result);
 use NetSuite\Classes\Account;
 use NetSuite\Classes\Task;
 use NetSuite\Classes\Contact;
+use NetSuite\Classes\ContactRole;
 use NetSuite\Classes\Current;
 use NetSuite\Classes\Customer;
 use NetSuite\Classes\CustomFieldList;
@@ -92,6 +93,8 @@ function entity_map($name){
       return new Task();
     case "contact":
       return new Contact();
+    case "contactrole":
+      return new ContactRole();
     case "currency":
       return new Currency();
     case "customer":
@@ -147,7 +150,6 @@ function map_from_data($entity, $data){
   if(array_key_exists('id', $entity)){
     $el->internalId = (int) $entity['id'];
   }
-
 
   if($entity['name'] == 'task'){
 
