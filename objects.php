@@ -151,6 +151,15 @@ function map_from_data($entity, $data){
     $el->internalId = (int) $entity['id'];
   }
 
+  if ($entity['name'] == 'contact'){
+    if(array_key_exists('company', $data)){
+      $customer = new RecordRef();
+      $customer->type = 'customer';
+      $customer->internalId = $data['company'];
+      $data['company'] = $customer;
+    }
+  }
+
   if($entity['name'] == 'task'){
 
     if(array_key_exists('transaction', $data)){
