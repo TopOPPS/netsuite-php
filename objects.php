@@ -24,6 +24,8 @@ use NetSuite\NetSuiteService;
 use NetSuite\Classes\DeleteRequest;
 use NetSuite\Classes\GetRequest;
 use NetSuite\Classes\RecordRef;
+use NetSuite\Classes\ListOrRecordRef;
+use NetSuite\Classes\MultiSelectCustomFieldRef;
 use NetSuite\Classes\UpdateRequest;
 use NetSuite\Classes\AddRequest;
 
@@ -134,6 +136,8 @@ function custom_field_map($name){
       return new StringCustomFieldRef();
     case "url":
       return new StringCustomFieldRef();
+    case "multiSelect":
+      return new MultiSelectCustomFieldRef();
     default:
       return new StringCustomFieldRef();
   }
@@ -185,9 +189,31 @@ function map_from_data($entity, $data){
   }
 
   if(array_key_exists('custom_field', $data)){
+    
+    if ($data['custom_field']['type'] == "multiSelect") {
+      
+      $all_options = array();
+      
+      /*
+       data = {"custom_field": {"type": "multiSelect", "value": [{"typeId": "72", "externalId": null, "name": "Full", "internalId": "1"}, {"typeId": "72", "externalId": null, "name": "Queen", "internalId": "2"}], "internalId": "custbodymultiselect"}}
+      */
+      
+      foreach($data['custom_field']['value'] as $opt) {
+        $opselected = new ListOrRecordRef();
+        $opselected->typeId = $opt['typeId'];
+        $opselected->internalId = $opt['internalId'];
+        $all_options[]= $opselected;
+      }
+      
+    }
+    else {
+      $all_options = $data['custom_field']['value'];
+    }
+    
+    
     $field = custom_field_map($data['custom_field']['type']);
     $field->scriptId = $data['custom_field']['internalId'];
-    $field->value = $data['custom_field']['value'];
+    $field->value = $all_options;
 
     $customFieldList = new CustomFieldList();
     $customFieldList->customField[] = $field;
