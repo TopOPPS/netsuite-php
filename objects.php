@@ -195,12 +195,11 @@ function map_from_data($entity, $data){
       $all_options = array();
       
       /*
-       data = {"custom_field": {"type": "multiSelect", "value": [{"typeId": "72", "externalId": null, "name": "Full", "internalId": "1"}, {"typeId": "72", "externalId": null, "name": "Queen", "internalId": "2"}], "internalId": "custbodymultiselect"}}
+       data = {"custom_field": {"type": "multiSelect", "value": [{"internalId": "1"}, {"internalId": "2"}], "internalId": "custbodymultiselect"}}
       */
       
       foreach($data['custom_field']['value'] as $opt) {
         $opselected = new ListOrRecordRef();
-        $opselected->typeId = $opt['typeId'];
         $opselected->internalId = $opt['internalId'];
         $all_options[]= $opselected;
       }
