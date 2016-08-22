@@ -189,27 +189,32 @@ function map_from_data($entity, $data){
   }
 
   if(array_key_exists('custom_field', $data)){
-    
+
     if ($data['custom_field']['type'] == "multiSelect") {
-      
-      $all_options = array();
-      
+
+
+
       /*
        data = {"custom_field": {"type": "multiSelect", "value": [{"internalId": "1"}, {"internalId": "2"}], "internalId": "custbodymultiselect"}}
       */
-      
-      foreach($data['custom_field']['value'] as $opt) {
-        $opselected = new ListOrRecordRef();
-        $opselected->internalId = $opt['internalId'];
-        $all_options[]= $opselected;
+      if($data['custom_field']['value']){
+        $all_options = array();
+        foreach($data['custom_field']['value'] as $opt) {
+          $opselected = new ListOrRecordRef();
+          $opselected->internalId = $opt['internalId'];
+          $all_options[]= $opselected;
+        }
+      } else {
+        $all_options = NULL;
       }
-      
+
+
     }
     else {
       $all_options = $data['custom_field']['value'];
     }
-    
-    
+
+
     $field = custom_field_map($data['custom_field']['type']);
     $field->scriptId = $data['custom_field']['internalId'];
     $field->value = $all_options;
