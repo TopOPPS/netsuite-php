@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-apache2 -I php_custom.ini -l log/error.log
+web: vendor/bin/heroku-php-apache2 -l log/error.log
