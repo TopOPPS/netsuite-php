@@ -173,11 +173,11 @@ function map_from_data($entity, $data){
       $data['transaction'] = $opp;
     }
 
-    if(array_key_exists('contact', $data)){
+    if(array_key_exists('assigned', $data)){
       $contact = new RecordRef();
-      $contact->type = "contact";
-      $contact->internalId = $data['contact'];
-      $data['contact'] = $contact;
+      $contact->type = "employee";
+      $contact->internalId = $data['assigned'];
+      $data['assigned'] = $contact;
     }
 
     if(array_key_exists('company', $data)){
