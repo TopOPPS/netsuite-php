@@ -5,7 +5,7 @@ set_time_limit(25);
 
 print ini_get('max_execution_time');
 
-sleep(35);
+sleep(45);
 
 print "fish";
 
