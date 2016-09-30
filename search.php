@@ -64,7 +64,7 @@ use NetSuite\Classes\CustomerStatusSearchBasic;
 
  */
 
-$service->setSearchPreferences(false, 100);
+$service->setSearchPreferences(false, 20);
 
 try{
 
