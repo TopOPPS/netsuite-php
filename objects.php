@@ -69,6 +69,7 @@ print json_encode($result);
 
 use NetSuite\Classes\Account;
 use NetSuite\Classes\Task;
+use NetSuite\Classes\Note;
 use NetSuite\Classes\Contact;
 use NetSuite\Classes\ContactRole;
 use NetSuite\Classes\Current;
@@ -93,6 +94,8 @@ function entity_map($name){
       return new Account();
     case "task":
       return new Task();
+    case "note":
+      return new Note();
     case "contact":
       return new Contact();
     case "contactrole":
@@ -163,7 +166,16 @@ function map_from_data($entity, $data){
       $data['company'] = $customer;
     }
   }
+  if($entity['name'] == 'note'){
 
+    if(array_key_exists('transaction', $data)){
+      $opp = new RecordRef();
+      $opp->type = "opportunity";
+      $opp->internalId = $data['transaction'];
+      $data['transaction'] = $opp;
+    }
+  }
+ 
   if($entity['name'] == 'task'){
 
     if(array_key_exists('transaction', $data)){
