@@ -6,7 +6,7 @@ use NetSuite\NetSuiteService;
 $config = array(
    // required -------------------------------------
    "endpoint" => "2016_1",
-   "host"     => $_SERVER['HTTP_HOST'] ?: "https://webservices.netsuite.com",
+   "host"     => $_SERVER['HTTP_HOST'] ?: "https://webservices.sandbox.netsuite.com",
    "email"    => $_SERVER['HTTP_EMAIL'],
    "password" => $_SERVER['HTTP_PASSWORD'],
    "role"     => $_SERVER['HTTP_ROLE'],
@@ -35,7 +35,7 @@ $search->title = $oppSearchField;
 $request = new SearchRequest();
 $request->searchRecord = $search;
 
-try {    
+try {
     $searchResponse = $service->search($request);
     http_response_code(200);
     print "Valid credentials.";
