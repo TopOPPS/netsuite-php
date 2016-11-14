@@ -32,7 +32,7 @@ use NetSuite\Classes\AddRequest;
 $config = array(
    // required -------------------------------------
    "endpoint" => "2016_1",
-   "host"     => $_SERVER['HTTP_HOST'] ?: "https://webservices.sandbox.netsuite.com",
+   "host"     => "https://webservices.netsuite.com",
    "email"    => $_SERVER['HTTP_EMAIL'],
    "password" => $_SERVER['HTTP_PASSWORD'],
    "role"     => $_SERVER['HTTP_ROLE'],
