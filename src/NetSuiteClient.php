@@ -104,6 +104,7 @@ class NetSuiteClient
             'cache_wsdl' => WSDL_CACHE_BOTH,
             'location' => $config['host']."/services/NetSuitePort_".$config['endpoint'],
             'keep_alive' => false,
+            'encoding' => 'UTF-8',
             'features' => SOAP_SINGLE_ELEMENT_ARRAYS,
             'user_agent' => "PHP-SOAP/".phpversion()." + ryanwinchester/netsuite-php",
         ), $overrides);
