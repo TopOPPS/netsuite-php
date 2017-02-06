@@ -25,6 +25,8 @@ composer require "ryanwinchester/netsuite-php:2016.1.*"
 
 ## Quickstart:
 
+- You will need to run `composer install` in order to create the 'vendor' directory.
+
 #### Instantiating the NetSuiteService class:
 
 The rest of the examples assume that you have done this.
@@ -42,7 +44,7 @@ $config = array(
    "password" => "mySecretPwd",
    "role"     => "3",
    "account"  => "MYACCT1",
-   "app_id"   => "4AD027CA-88B3-46EC-9D3E-41C6E6A325E2",
+   "app_id"   => "9DB49F44-9854-44E9-8527-115AE98823A5",
    // optional -------------------------------------
    "logging"  => true,
    "log_path" => "/var/www/myapp/logs/netsuite"
@@ -50,6 +52,8 @@ $config = array(
 
 $service = new NetSuiteService($config);
 ```
+
+Note for app_id: Application Id is required for requests using end point 2015.2 or later. Application Id can be found by going to SetUp -> Integration -> Manage Integrations for NetSuite UI using Admin role.
 
 #### Retreiving a customer record:
 
