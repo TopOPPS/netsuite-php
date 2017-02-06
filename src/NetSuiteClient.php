@@ -57,7 +57,7 @@ class NetSuiteClient
             'password' => getenv('NETSUITE_PASSWORD'),
             'role' => getenv('NETSUITE_ROLE') ?: '3',
             'account' => getenv('NETSUITE_ACCOUNT'),
-            'app_id' => getenv('NETSUITE_APP_ID') ?: '4AD027CA-88B3-46EC-9D3E-41C6E6A325E2',
+            'app_id' => getenv('NETSUITE_APP_ID') ?: '9DB49F44-9854-44E9-8527-115AE98823A5',
             'logging' => getenv('NETSUITE_LOGGING'),
             'log_path' => getenv('NETSUITE_LOG_PATH'),
         );
