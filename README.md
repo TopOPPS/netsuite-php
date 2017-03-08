@@ -176,4 +176,4 @@ All additional work is licensed under the **Apache 2.0** open source software li
 
 ## Autodeploy Status
 
-Maybe?
+Maybe? doesn't seem to be.
