@@ -7,7 +7,7 @@ use NetSuite\NetSuiteService;
 $config = array(
    // required -------------------------------------
    "endpoint" => "2016_1",
-   "host"     => "https://webservices.netsuite.com",
+   "host"     => $_SERVER['HTTP_NETSUITE_HOST'] ?: "https://webservices.netsuite.com",
    "email"    => $_SERVER['HTTP_EMAIL'],
    "password" => $_SERVER['HTTP_PASSWORD'],
    "role"     => $_SERVER['HTTP_ROLE'],
